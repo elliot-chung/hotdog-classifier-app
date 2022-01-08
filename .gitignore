@@ -1,5 +1,10 @@
 # This Project
 uploads*
+model_build/glizzy*
+model_build/.ipynb_checkpoints*
+model_build/images/train*
+model_build/images/test*
+
 
 # Logs
 logs
