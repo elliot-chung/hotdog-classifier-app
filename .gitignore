@@ -1,9 +1,19 @@
 # This Project
 uploads*
+
+# Virutal Enviorment
 model_build/glizzy*
+
+# Notebook Checkpoints
 model_build/.ipynb_checkpoints*
+
+# Uncompressed Images
 model_build/images/train*
 model_build/images/test*
+
+# Uncompressed Model
+model_build/model/*
+!model_build/model/tfjsexport*
 
 
 # Logs

@@ -74,7 +74,7 @@ function makePrediction(transImage, callback) {
 }
 
 async function loadModel () {
-    const handler = tf.io.fileSystem("model/model.json")
+    const handler = tf.io.fileSystem("model_build/model/tfjsexport/model.json")
     return await tf.loadGraphModel(handler);
 }
 
