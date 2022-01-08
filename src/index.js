@@ -6,6 +6,13 @@ const express = require('express');
 const app = express();
 const PORT = 8080;
 
+const labelMap = {
+    1:{name:'ThumbsUp', color:'red'},
+    2:{name:'ThumbsDown', color:'yellow'},
+    3:{name:'ThankYou', color:'lime'},
+    4:{name:'LiveLong', color:'blue'},
+}
+
 let model = loadModel();
 
 app.listen(
@@ -29,14 +36,13 @@ app.post('/evaluate/fileUpload', upload.single('evaluate'), (req, res)=>{
 
 function loadImage(path, callback) {
     fs.readFile(path, (err, imageBuffer)=>{
-        const image = tf.node.decodeImage(imageBuffer)
-        callback(image);
+        callback(imageBuffer);
     })
 }
 
 function transformImage(image, callback) {
-    const resized = tf.image.resizeBilinear(image, [640,480])
-    const casted = resized.cast('int32')
+    const decodedImage = tf.node.decodeImage(image)
+    const casted = decodedImage.cast('int32')
     const expanded = casted.expandDims(0)
     callback(expanded)
 }
@@ -44,7 +50,25 @@ function transformImage(image, callback) {
 function makePrediction(transImage, callback) {
     model.then((net)=>{
         net.executeAsync(transImage).then((prediction)=>{
-            callback(prediction)
+            prediction[4].array().then((detection_boxes)=>{
+                prediction[7].array().then((detection_multiclass_scores)=>{
+                    let boxes = detection_boxes[0];
+                    let scores = detection_multiclass_scores[0];
+                    boxes = boxes.filter((elem, ind)=>{
+                        return scores[ind][1]>0.9 ||
+                               scores[ind][2]>0.9 || 
+                               scores[ind][3]>0.9 ||
+                               scores[ind][4]>0.9 
+                    })
+                    scores = scores.filter((elem)=>{
+                        return elem[1]>0.9 ||
+                               elem[2]>0.9 ||
+                               elem[3]>0.9 ||
+                               elem[4]>0.9
+                    })
+                    callback({boxes, scores});
+                })
+            })
         })
     })
 }
