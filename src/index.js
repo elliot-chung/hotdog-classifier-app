@@ -5,7 +5,7 @@ const PORT = 8080
 const multer = require('multer')
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/')
+      cb(null, '/uploads')
     },
     filename: function (req, file, cb) {
       cb(null, file.originalname) 
@@ -23,12 +23,13 @@ app.listen(
     () => console.log(`it's alive on http://localhost:${PORT}`)
 )
 
-app.post('/evaluate/fileUpload', upload.single('evaluate'), (req, res)=>{
+app.post('/', upload.single('evaluate'), (req, res)=>{
     loadImage(req.file.path, (image)=>{
         transformImage(image, (transImage)=>{
             makePrediction(transImage, (prediction)=>{
                 formatPrediction(prediction, (resObj)=>{
                     res.send(resObj)
+                    fs.unlink(req.file.path, ()=>{})
                 })
             })
         })
