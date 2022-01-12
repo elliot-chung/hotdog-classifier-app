@@ -17,6 +17,7 @@ const fs = require('fs')
 const tf = require('@tensorflow/tfjs-node')
 const { nextTick } = require('process')
 
+createFileSystem()
 const model = loadModel()
 
 app.listen(
@@ -88,6 +89,13 @@ function formatPrediction(prediction, callback) {
 async function loadModel () {
     const handler = tf.io.fileSystem("model_build/model/tfjsexport/model.json")
     return await tf.loadGraphModel(handler);
+}
+
+function createFileSystem () {
+    const dir  = './uploads'
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir)
+    }
 }
 
 

@@ -1,3 +1,6 @@
+#Uploads Folder
+uploads/*
+
 # Virutal Enviorment
 model_build/glizzy*
 
