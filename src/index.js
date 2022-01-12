@@ -1,37 +1,38 @@
-const tf = require('@tensorflow/tfjs-node');
-const multer = require('multer');
+const express = require('express')
+const app = express()
+const PORT = 8080
+
+const multer = require('multer')
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname) 
+    }
+})
+const upload = multer({ storage: storage })
+
 const fs = require('fs')
-const upload = multer({dest: 'uploads/'});
-const express = require('express');
-const app = express();
-const PORT = 8080;
+const tf = require('@tensorflow/tfjs-node')
 
-const labelMap = {
-    1:{name:'ThumbsUp', color:'red'},
-    2:{name:'ThumbsDown', color:'yellow'},
-    3:{name:'ThankYou', color:'lime'},
-    4:{name:'LiveLong', color:'blue'},
-}
-
-let model = loadModel();
+const model = loadModel()
 
 app.listen(
     PORT,
     () => console.log(`it's alive on http://localhost:${PORT}`)
 )
 
-app.get('/evaluate/test', (req, res)=>{
-    loadImage('uploads/1f37da6c0ccecc1f7c02a887620c6b94.jpeg', (image)=>{
+app.post('/evaluate/fileUpload', upload.single('evaluate'), (req, res)=>{
+    loadImage(req.file.path, (image)=>{
         transformImage(image, (transImage)=>{
             makePrediction(transImage, (prediction)=>{
-                res.send(prediction)
+                formatPrediction(prediction, (resObj)=>{
+                    res.send(resObj)
+                })
             })
         })
     })
-})
-
-app.post('/evaluate/fileUpload', upload.single('evaluate'), (req, res)=>{
-    res.status(200).send(req.file)
 });
 
 function loadImage(path, callback) {
@@ -50,25 +51,24 @@ function transformImage(image, callback) {
 function makePrediction(transImage, callback) {
     model.then((net)=>{
         net.executeAsync(transImage).then((prediction)=>{
-            prediction[4].array().then((detection_boxes)=>{
-                prediction[7].array().then((detection_multiclass_scores)=>{
-                    let boxes = detection_boxes[0];
-                    let scores = detection_multiclass_scores[0];
-                    boxes = boxes.filter((elem, ind)=>{
-                        return scores[ind][1]>0.9 ||
-                               scores[ind][2]>0.9 || 
-                               scores[ind][3]>0.9 ||
-                               scores[ind][4]>0.9 
-                    })
-                    scores = scores.filter((elem)=>{
-                        return elem[1]>0.9 ||
-                               elem[2]>0.9 ||
-                               elem[3]>0.9 ||
-                               elem[4]>0.9
-                    })
-                    callback({boxes, scores});
-                })
+            callback(prediction)
+        })
+    })
+}
+
+function formatPrediction(prediction, callback) {
+    prediction[0].array().then((detection_multiclass_scores)=>{
+        prediction[2].array().then((detection_boxes)=>{
+            let boxes = detection_boxes[0];
+            let scores = detection_multiclass_scores[0];
+            boxes = boxes.filter((elem, ind)=>{
+                return scores[ind][1]>0.75
+
             })
+            scores = scores.filter((elem)=>{
+                return elem[1]>0.75
+            })
+            callback({boxes, scores});
         })
     })
 }
@@ -77,4 +77,6 @@ async function loadModel () {
     const handler = tf.io.fileSystem("model_build/model/tfjsexport/model.json")
     return await tf.loadGraphModel(handler);
 }
+
+
 
