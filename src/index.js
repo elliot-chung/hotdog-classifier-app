@@ -24,7 +24,7 @@ app.listen(
 )
 
 app.post('/', (req, res)=>{
-    res.send({"All Good"})
+    res.send("All Good")
 })
 
 app.post('/upload', upload.single('evaluate'), (req, res)=>{
