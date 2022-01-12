@@ -23,7 +23,7 @@ app.listen(
     () => console.log(`it's alive on http://localhost:${PORT}`)
 )
 
-app.post('/', (req, res)=>{
+app.get('/', (req, res)=>{
     res.send("All Good")
 })
 
