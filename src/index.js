@@ -23,7 +23,11 @@ app.listen(
     () => console.log(`it's alive on http://localhost:${PORT}`)
 )
 
-app.post('/', upload.single('evaluate'), (req, res)=>{
+app.post('/', (req, res)=>{
+    res.send({"All Good"})
+})
+
+app.post('/upload', upload.single('evaluate'), (req, res)=>{
     loadImage(req.file.path, (image)=>{
         transformImage(image, (transImage)=>{
             makePrediction(transImage, (prediction)=>{
