@@ -15,6 +15,7 @@ const upload = multer({ storage: storage })
 
 const fs = require('fs')
 const tf = require('@tensorflow/tfjs-node')
+const { nextTick } = require('process')
 
 const model = loadModel()
 
@@ -42,7 +43,11 @@ app.post('/upload', upload.single('evaluate'), (req, res)=>{
 
 function loadImage(path, callback) {
     fs.readFile(path, (err, imageBuffer)=>{
-        callback(imageBuffer);
+        if (err) {
+            next(err)
+        } else {
+            callback(imageBuffer)
+        }
     })
 }
 
@@ -57,6 +62,8 @@ function makePrediction(transImage, callback) {
     model.then((net)=>{
         net.executeAsync(transImage).then((prediction)=>{
             callback(prediction)
+        }).catch((err)=>{
+            next(err)
         })
     })
 }
