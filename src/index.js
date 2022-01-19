@@ -15,7 +15,6 @@ const upload = multer({ storage: storage })
 
 const fs = require('fs')
 const tf = require('@tensorflow/tfjs-node')
-const { nextTick } = require('process')
 
 createFileSystem()
 const model = loadModel()
@@ -40,7 +39,19 @@ app.post('/upload', upload.single('evaluate'), (req, res)=>{
             })
         })
     })
-});
+})
+
+app.get('/test', (req, res)=>{
+    loadImage('uploads/diranchor.jpg', (image)=>{
+        transformImage(image, (transImage)=>{
+            makePrediction(transImage, (prediction)=>{
+                formatPrediction(prediction, (resObj)=>{
+                    res.send(resObj)
+                })
+            })
+        })
+    })
+})
 
 function loadImage(path, callback) {
     fs.readFile(path, (err, imageBuffer)=>{
