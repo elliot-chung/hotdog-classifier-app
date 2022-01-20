@@ -55,31 +55,24 @@ function transformImage (image) {
     return expanded
 }
 
-function makePrediction (transImage) {
-    return model.then((net)=>{
-        return net.executeAsync(transImage).then((prediction)=>{
-            return prediction
-        })
-    })
+async function makePrediction (transImage) {
+    const net = await model
+    return await net.executeAsync(transImage)
 }
 
-function formatPrediction (prediction) {
+async function formatPrediction (prediction) {
     const scorePromise = prediction[0].array()
-                        .then((detection_multiclass_scores)=>{ return detection_multiclass_scores[0] })
-    const boxPromise   = prediction[2].array()
-                        .then((detection_boxes)=>{ return detection_boxes[0] })
-    return Promise.all([scorePromise, boxPromise]).then((values)=>{
-        let boxes = values[1]
-        let scores = values[0]
-        boxes = boxes.filter((elem, ind)=>{
-            return scores[ind][1]>0.75
-
-        })
-        scores = scores.filter((elem)=>{
-            return elem[1]>0.75
-        })
-        return {boxes, scores} 
+    const boxPromise = prediction[2].array()
+    const values = await Promise.all([scorePromise, boxPromise])
+    let boxes = values[1][0]
+    let scores = values[0][0]
+    boxes = boxes.filter((elem, ind)=>{
+        return scores[ind][1]>0.75
     })
+    scores = scores.filter((elem)=>{
+        return elem[1]>0.75
+    })
+    return {boxes, scores} 
 }
 
 async function loadModel () {
