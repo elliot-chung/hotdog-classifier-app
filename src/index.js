@@ -38,23 +38,10 @@ app.post('/upload', upload.single('evaluate'), (req, res)=>{
             fs.unlink(req.file.path, ()=>{})
         })
         .catch((err) => {
-            res.status(400).send({ 'error': err.toString() })
+            res.status(400).send(err.toString())
             fs.unlink(req.file.path, ()=>{})
         })
 
-})
-
-app.get('/test', (req, res)=>{
-    loadImage('uploads/diranchor.jpg')
-        .then(transformImage)
-        .then(makePrediction)
-        .then(formatPrediction)
-        .then((prediction)=>{
-            res.status(200).send(prediction)
-        })
-        .catch((err) => {
-            res.status(400).send(err)
-        })
 })
 
 function loadImage (path) {
@@ -77,8 +64,10 @@ function makePrediction (transImage) {
 }
 
 function formatPrediction (prediction) {
-    const scorePromise = prediction[0].array().then((detection_multiclass_scores)=>{ return detection_multiclass_scores[0] })
-    const boxPromise = prediction[2].array().then((detection_boxes)=>{ return detection_boxes[0] })
+    const scorePromise = prediction[0].array()
+                        .then((detection_multiclass_scores)=>{ return detection_multiclass_scores[0] })
+    const boxPromise   = prediction[2].array()
+                        .then((detection_boxes)=>{ return detection_boxes[0] })
     return Promise.all([scorePromise, boxPromise]).then((values)=>{
         let boxes = values[1]
         let scores = values[0]
