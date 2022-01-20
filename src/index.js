@@ -48,6 +48,9 @@ app.get('/test', (req, res)=>{
         .then((prediction)=>{
             res.status(200).send(prediction)
         })
+        .catch((err) => {
+            res.status(400).send(err)
+        })
 })
 
 function loadImage (path) {
