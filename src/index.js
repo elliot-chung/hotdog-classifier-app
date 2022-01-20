@@ -25,7 +25,7 @@ app.listen(
 )
 
 app.get('/', (req, res)=>{
-    res.send("All Good")
+    res.status(200).send("All Good")
 })
 
 app.post('/upload', upload.single('evaluate'), (req, res)=>{
@@ -35,6 +35,10 @@ app.post('/upload', upload.single('evaluate'), (req, res)=>{
         .then(formatPrediction)
         .then((prediction)=>{
             res.status(200).send(prediction)
+            fs.unlink(req.file.path, ()=>{})
+        })
+        .catch((err) => {
+            res.status(400).send({ 'error': err.toString() })
             fs.unlink(req.file.path, ()=>{})
         })
 
