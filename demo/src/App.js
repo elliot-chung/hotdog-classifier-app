@@ -1,23 +1,26 @@
 import './App.css';
+import cameraImg from './camera.svg';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CameraButton></CameraButton>
     </div>
   );
+}
+
+function CameraButton() {
+  // Credit where credit is due
+  // https://stackoverflow.com/questions/572768/styling-an-input-type-file-button?rq=1  
+  return (
+      <div className="camera-btn">
+        <label htmlFor="file-upload">
+          <img src={cameraImg} alt="Camera"></img>
+          <input id="file-upload" type="file" accept="image/*;capture=camera"></input>
+          Choose an Image to Identify
+        </label>    
+      </div>
+    )
 }
 
 export default App;
