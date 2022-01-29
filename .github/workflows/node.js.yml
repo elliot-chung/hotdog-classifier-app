@@ -27,6 +27,7 @@ jobs:
     
     - name: Install NPM packages
       run: npm ci
+      working-directory: demo
 
     - name: Build project
       run: CI=false npm run build
