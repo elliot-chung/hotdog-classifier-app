@@ -2,6 +2,8 @@ import './App.css'
 import axios from 'axios'
 import { useState, useCallback } from 'react'
 import cameraImg from './camera.svg'
+import check from './hotdog_check.svg'
+import not from './not_x.svg'
 
 function App() {
   return (
@@ -56,10 +58,13 @@ function CameraButton() {
   return (
       <div className="camera-btn">
         <label>
-          <img src={imgFile !== "" ? imgFile : cameraImg} alt="Display Area"/>
+          
+          <img src={imgFile !== "" ? imgFile : cameraImg} className={apiState} alt="Display Area"/>
+          {apiState === "hotdog" && (<img src={check} className="state_ui" alt="State UI"/>)}
+          {apiState === "not" && (<img src={not} className="state_ui" alt="State UI"/>)}  
           <input disabled={apiState === "loading"} 
                  type="file" 
-                 accept="image/jpeg, image/png, capture=camera" 
+                 accept="image/jpeg, capture=camera" 
                  onChange={handleFile}
                  />
         </label>    
