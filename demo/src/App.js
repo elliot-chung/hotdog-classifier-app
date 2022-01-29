@@ -35,17 +35,14 @@ function CameraButton() {
     if(evt.target.files.length !== 0) { 
       setImgFile(URL.createObjectURL(evt.target.files[0]))
       setApiState("loading")
-      console.log("loading")
       const results = await uploadFile(evt.target.files[0])
       console.log(results)
       if (results.status >= 400) {
         setApiState("broken")
       } else if (results.data.scores.length === 0) {
         setApiState("not")
-        console.log("not")
       } else {
         setApiState("hotdog")
-        console.log("hotdog")
       }
     } else {
       setImgFile("")
