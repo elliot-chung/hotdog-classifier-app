@@ -28,6 +28,9 @@ jobs:
     - name: Install NPM packages
       run: npm ci
     
+    - name: Navigate to Directory
+      run: cd demo
+      
     - name: Build project
       run: CI=false npm run build
 
