@@ -34,11 +34,10 @@ jobs:
       working-directory: demo
 
     - name: Upload production-ready build files
-      working-directory: demo
       uses: actions/upload-artifact@v2
       with:
         name: production-files
-        path: ./build
+        path: ./demo/build
   
   deploy:
     name: Deploy
