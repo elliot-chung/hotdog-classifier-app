@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/hotdog-classifier-api/demo/src/static/css/main.4fa6d190.css",
+    "main.js": "/hotdog-classifier-api/demo/src/static/js/main.af82405f.js",
+    "static/media/not_x.svg": "/hotdog-classifier-api/demo/src/static/media/not_x.18a1f5a530cfa2838819a1176f3c3e0b.svg",
+    "static/media/camera.svg": "/hotdog-classifier-api/demo/src/static/media/camera.6eafd6401bf53ae59245ab2850d67631.svg",
+    "static/media/hotdog_check.svg": "/hotdog-classifier-api/demo/src/static/media/hotdog_check.434932d1927adfcf8a44a25d313465be.svg",
+    "index.html": "/hotdog-classifier-api/demo/src/index.html",
+    "main.4fa6d190.css.map": "/hotdog-classifier-api/demo/src/static/css/main.4fa6d190.css.map",
+    "main.af82405f.js.map": "/hotdog-classifier-api/demo/src/static/js/main.af82405f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4fa6d190.css",
+    "static/js/main.af82405f.js"
+  ]
+}
