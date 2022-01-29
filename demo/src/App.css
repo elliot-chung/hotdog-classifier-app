@@ -41,7 +41,6 @@
 
 .state_ui {
   height: 30%;
-  width: 90vw;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -57,9 +56,11 @@
 }
 
 .hotdog {
-  filter: drop-shadow(0 0 0.75rem black) brightness(100%);
+  filter: drop-shadow(0 0 0.75rem black) brightness(75%);
 }
 
 .not {
-  filter: drop-shadow(0 0 0.75rem black) brightness(100%);
+  filter: drop-shadow(0 0 0.75rem black) brightness(25%);
 }
+
+
