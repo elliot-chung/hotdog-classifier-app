@@ -32,24 +32,16 @@ app.get('/', (req, res)=>{
 })
 
 app.post('/upload', upload.single('evaluate'), (req, res)=>{
-    loadImage(req.file.path)
-        .then(transformImage)
-        .then(makePrediction)
-        .then(formatPrediction)
-        .then((prediction)=>{
-            res.status(200).send(prediction)
-            fs.unlink(req.file.path, ()=>{})
-        })
-        .catch((err) => {
-            res.status(400).send(err.toString())
-            fs.unlink(req.file.path, ()=>{})
-        })
-
+    try {
+        const image = transformImage(await fs.promises.readFile(req.file.path))
+        const prediction = await makePrediction(image)
+        const formattedPrediction = await formatPrediction(prediction)
+        res.status(200).send(formattedPrediction)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+    fs.unlink(req.file.path, (err)=>{})
 })
-
-function loadImage (path) {
-    return fs.promises.readFile(path)
-}
 
 function transformImage (image) {
     const decodedImage = tf.node.decodeImage(image)
