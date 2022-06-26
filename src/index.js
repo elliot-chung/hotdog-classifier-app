@@ -31,10 +31,11 @@ app.get('/', (req, res)=>{
     res.status(200).send("All Good")
 })
 
-app.post('/upload', upload.single('evaluate'), (req, res)=>{
+app.post('/upload', upload.single('evaluate'), async (req, res)=>{
     try {
-        const image = transformImage(await fs.promises.readFile(req.file.path))
-        const prediction = await makePrediction(image)
+        const image = await fs.promises.readFile(req.file.path)
+        const transformedImage = transformImage(image)
+        const prediction = await makePrediction(transformedImage)
         const formattedPrediction = await formatPrediction(prediction)
         res.status(200).send(formattedPrediction)
     } catch (error) {
