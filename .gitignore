@@ -1,4 +1,6 @@
-images*
+images/test*
+images/train*
+images/archive.zip
 
 model_build/model*
 
