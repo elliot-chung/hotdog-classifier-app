@@ -26,7 +26,7 @@ function CameraButton() {
   const imgRef = useRef(null)
 
   const evaluateImage = useCallback(async () => {
-    if (imgRef.current.currentSrc.match(/blob/g) === null) return
+    
     const imgTensor = tf.browser.fromPixels(imgRef.current)
     const resizedImgTensor = tf.image.resizeBilinear(imgTensor, [224, 224])
     const imgTensor4D = resizedImgTensor.expandDims(0)
@@ -36,8 +36,10 @@ function CameraButton() {
     const prediction = predictions.flatten()
     const predictionSigmoid = prediction.sigmoid()
     const predictionValues = tf.zerosLike(predictionSigmoid).where(predictionSigmoid.less(0.5), 1)
-    
-    console.log(predictionValues.dataSync())
+
+    setAppState("ready")
+
+    if (imgRef.current.currentSrc.match(/blob/g) === null) return
 
 
     if (predictionValues.dataSync()[0] === 1) {
@@ -64,7 +66,7 @@ function CameraButton() {
           {appState === "hotdog" && (<img src={check} className="state_ui" alt="State UI"/>)}
           {appState === "not" && (<img src={not} className="state_ui" alt="State UI"/>)}  
           {appState === "loading" && <Icon icon="eos-icons:loading" color="white" height="80" className="state_ui"/>}
-          <input disabled={appState === "loading"} 
+          <input disabled={appState === "loading" || appState === "waiting"} 
                  type="file" 
                  accept="image/jpeg, capture=camera" 
                  onChange={handleFile}
