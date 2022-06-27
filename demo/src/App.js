@@ -1,10 +1,11 @@
 import './App.css'
-import axios from 'axios'
-import { useState, useCallback } from 'react'
+import * as tf from '@tensorflow/tfjs'
+import { useState, useCallback, useMemo, useRef } from 'react'
 import { Icon } from '@iconify/react'
 import cameraImg from './camera.svg'
 import check from './hotdog_check.svg'
 import not from './not_x.svg'
+
 
 function App() {
   return (
@@ -15,53 +16,55 @@ function App() {
 }
 
 function CameraButton() {
-  
-
-  const [imgFile, setImgFile] = useState("");
-  const [apiState, setApiState] = useState("waiting");
-
-  const uploadFile = useCallback(async (file) => {
-    const formdata = new FormData()
-    formdata.append('evaluate', file)
-
-    const results = await axios({
-      url: 'https://hotdog-classifier-api.herokuapp.com/upload', 
-      method: "POST", 
-      data: formdata
-    })
-    return results
+  const model = useMemo(async () => {
+    const net = await tf.loadGraphModel('https://hotdog-classifier.s3.us-west-1.amazonaws.com/model.json')
+    return net
   }, [])
 
-  const handleFile = useCallback( async (evt) => {
+  const [imgFile, setImgFile] = useState("")
+  const [appState, setAppState] = useState("waiting")
+  const imgRef = useRef(null)
+
+  const evaluateImage = useCallback(async () => {
+    if (imgRef.current.currentSrc.match(/blob/g) === null) return
+    const imgTensor = tf.browser.fromPixels(imgRef.current)
+    const resizedImgTensor = tf.image.resizeBilinear(imgTensor, [224, 224])
+    const imgTensor4D = resizedImgTensor.expandDims(0)
+
+    const predictions = (await model).predict(imgTensor4D)
+
+    const prediction = predictions.flatten()
+    const predictionSigmoid = prediction.sigmoid()
+    const predictionValues = tf.zerosLike(predictionSigmoid).where(predictionSigmoid.less(0.5), 1)
+    
+    console.log(predictionValues.dataSync())
+
+
+    if (predictionValues.dataSync()[0] === 1) {
+      setAppState("not")
+    } else {
+      setAppState("hotdog")
+    }
+  }, [ model ])
+
+  const handleFile = useCallback((evt) => {
     if(evt.target.files.length !== 0) { 
       setImgFile(URL.createObjectURL(evt.target.files[0]))
-      setApiState("loading")
-      const results = await uploadFile(evt.target.files[0])
-      console.log(results)
-      if (results.status >= 400) {
-        setApiState("broken")
-      } else if (results.data.scores.length === 0) {
-        setApiState("not")
-      } else {
-        setApiState("hotdog")
-      }
+      setAppState("loading")
     } else {
       setImgFile("")
-      setApiState("waiting")
+      setAppState("waiting")
     }
-  }, [uploadFile])
-
-  // Credit where credit is due: styling an input element
-  // https://stackoverflow.com/questions/572768/styling-an-input-type-file-button?rq=1  
+  }, [ setImgFile, setAppState ])
 
   return (
       <div className="camera-btn">
         <label>
-          <img src={imgFile !== "" ? imgFile : cameraImg} className={apiState} alt="Display Area"/>
-          {apiState === "hotdog" && (<img src={check} className="state_ui" alt="State UI"/>)}
-          {apiState === "not" && (<img src={not} className="state_ui" alt="State UI"/>)}  
-          {apiState === "loading" && <Icon icon="eos-icons:loading" color="white" height="80" className="state_ui"/>}
-          <input disabled={apiState === "loading"} 
+          <img ref={imgRef} src={imgFile !== "" ? imgFile : cameraImg} onLoad={evaluateImage} className={appState} alt="Display Area"/>
+          {appState === "hotdog" && (<img src={check} className="state_ui" alt="State UI"/>)}
+          {appState === "not" && (<img src={not} className="state_ui" alt="State UI"/>)}  
+          {appState === "loading" && <Icon icon="eos-icons:loading" color="white" height="80" className="state_ui"/>}
+          <input disabled={appState === "loading"} 
                  type="file" 
                  accept="image/jpeg, capture=camera" 
                  onChange={handleFile}
