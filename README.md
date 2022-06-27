@@ -26,19 +26,19 @@ Each of these have been addressed in version 2
 
 ## Model Training/Architecture Details
 ### Example Training Data
-![Example Training Data](/images/screenshots/exampledata.png)
+![Example Training Data](images/screenshots/exampledata.png)
 
 ### Data Augmentation 
-The following shows the results of using Tensorflow's preprocessing layers. Images were randomly flipped, rotated, and zoomed to create more training data. 
-![Data Augmentation](/images/screenshots/dataaugmentation.png)
+The following shows the results of using Tensorflow's preprocessing layers. Images were randomly flipped, rotated, and zoomed to create more training data.  
+![Data Augmentation](images/screenshots/dataaugmentation.png)
 
 ### Model Architecture
 I made use of the the MobilenetV3 implementation that comes with Tensorflow for transfer learning.
-![Model Architecture](/images/screenshots/architecture.png)
+![Model Architecture](images/screenshots/architecture.png)
 
 ### Training History
 The model was trained on google colab. The optimizer used was Adam and the loss function was binary cross-entropy. The training data was batched in groups of 32. The early stopping condition was met at the end of the 9th epoch.  
-![Training History](/images/screenshots/history.png)
+![Training History](images/screenshots/history.png)
 
 ## Tools
 Tensorflow/TensorflowJS  
