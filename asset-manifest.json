@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/hotdog-classifier-api/static/css/main.c0e686fd.css",
-    "main.js": "/hotdog-classifier-api/static/js/main.1dea0470.js",
+    "main.js": "/hotdog-classifier-api/static/js/main.f10eb12c.js",
     "static/media/not_x.svg": "/hotdog-classifier-api/static/media/not_x.18a1f5a530cfa2838819a1176f3c3e0b.svg",
     "static/media/camera.svg": "/hotdog-classifier-api/static/media/camera.6eafd6401bf53ae59245ab2850d67631.svg",
     "static/media/hotdog_check.svg": "/hotdog-classifier-api/static/media/hotdog_check.434932d1927adfcf8a44a25d313465be.svg",
     "index.html": "/hotdog-classifier-api/index.html",
     "main.c0e686fd.css.map": "/hotdog-classifier-api/static/css/main.c0e686fd.css.map",
-    "main.1dea0470.js.map": "/hotdog-classifier-api/static/js/main.1dea0470.js.map"
+    "main.f10eb12c.js.map": "/hotdog-classifier-api/static/js/main.f10eb12c.js.map"
   },
   "entrypoints": [
     "static/css/main.c0e686fd.css",
-    "static/js/main.1dea0470.js"
+    "static/js/main.f10eb12c.js"
   ]
 }
