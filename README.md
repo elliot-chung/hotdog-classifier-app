@@ -1,4 +1,4 @@
-# Hotdog Classifier API
+# Hotdog Classifier App
 ## [Link to Demo Website](https://ec-2018.github.io/hotdog-classifier-api/)
   
   
