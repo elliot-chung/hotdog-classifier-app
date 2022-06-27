@@ -38,8 +38,8 @@ function CameraButton() {
     const predictionValues = tf.zerosLike(predictionSigmoid).where(predictionSigmoid.less(0.5), 1)
 
     setAppState("ready")
-
-    if (imgRef.current.currentSrc.match(/blob/g) === null) return
+    
+    if (imgRef.current.currentSrc.match(/hotdog-classifier-api/g) !== null) return
 
 
     if (predictionValues.dataSync()[0] === 1) {
