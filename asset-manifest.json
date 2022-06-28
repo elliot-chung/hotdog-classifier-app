@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/hotdog-classifier-app/static/css/main.c0e686fd.css",
-    "main.js": "/hotdog-classifier-app/static/js/main.4598dce4.js",
+    "main.js": "/hotdog-classifier-app/static/js/main.2c63d2b0.js",
     "static/media/not_x.svg": "/hotdog-classifier-app/static/media/not_x.18a1f5a530cfa2838819a1176f3c3e0b.svg",
     "static/media/camera.svg": "/hotdog-classifier-app/static/media/camera.6eafd6401bf53ae59245ab2850d67631.svg",
     "static/media/hotdog_check.svg": "/hotdog-classifier-app/static/media/hotdog_check.434932d1927adfcf8a44a25d313465be.svg",
     "index.html": "/hotdog-classifier-app/index.html",
     "main.c0e686fd.css.map": "/hotdog-classifier-app/static/css/main.c0e686fd.css.map",
-    "main.4598dce4.js.map": "/hotdog-classifier-app/static/js/main.4598dce4.js.map"
+    "main.2c63d2b0.js.map": "/hotdog-classifier-app/static/js/main.2c63d2b0.js.map"
   },
   "entrypoints": [
     "static/css/main.c0e686fd.css",
-    "static/js/main.4598dce4.js"
+    "static/js/main.2c63d2b0.js"
   ]
 }
