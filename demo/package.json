@@ -1,6 +1,6 @@
 {
   "name": "demo",
-  "homepage": "https://ec-2018.github.io/hotdog-classifier-api/",
+  "homepage": "https://ec-2018.github.io/hotdog-classifier-app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
