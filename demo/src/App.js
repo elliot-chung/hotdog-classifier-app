@@ -41,7 +41,6 @@ function CameraButton() {
     
     if (imgRef.current.currentSrc.match(/hotdog-classifier-api/g) !== null) return
 
-
     if (predictionValues.dataSync()[0] === 1) {
       setAppState("not")
     } else {
