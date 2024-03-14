@@ -1,5 +1,5 @@
 # Hotdog Classifier App
-## [Link to Demo Website](https://ec-2018.github.io/hotdog-classifier-app/)
+## [Link to Demo Website](https://elliot-chung.github.io/hotdog-classifier-app/)
   
   
 ## How It's Built
